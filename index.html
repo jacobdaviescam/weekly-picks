@@ -3,46 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jacob's Weekly Picks</title>
+    <title>Weekly Picks</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Weekly Picks">
-    <meta name="theme-color" content="#0f0f0f">
+    <meta name="theme-color" content="#F4E8D0">
     <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --parchment: #F4E8D0;
+            --parchment-dark: #E8D7B5;
+            --cream: #FAF5E4;
+            --burgundy: #6B2C2C;
+            --burgundy-dark: #4A1E1E;
+            --forest: #2C4A2C;
+            --navy: #1A1F3A;
+            --deep-brown: #3D2817;
+            --gold: #C9A961;
+            --brass: #B8860B;
+            --text-primary: #3D2817;
+            --text-secondary: #6B4423;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, "Helvetica Neue", system-ui, sans-serif;
-            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-            color: #e0e0e0;
-            line-height: 1.6;
+            font-family: 'EB Garamond', 'Garamond', 'Georgia', serif;
+            background: var(--parchment);
+            color: var(--text-primary);
+            line-height: 1.7;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
         }
 
-        .container { max-width: 1024px; margin: 0 auto; padding: 20px; }
+        /* Atmospheric background matching Borderlands Atlas */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: -2;
+            background:
+                radial-gradient(ellipse 60% 60% at center, rgba(250,245,228,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at top left, rgba(44,74,44,0.1) 0%, transparent 35%),
+                radial-gradient(ellipse at top right, rgba(107,44,44,0.1) 0%, transparent 35%),
+                radial-gradient(ellipse at bottom left, rgba(184,134,11,0.08) 0%, transparent 35%),
+                radial-gradient(ellipse at bottom right, rgba(61,40,23,0.12) 0%, transparent 35%);
+        }
+
+        /* Paper texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -3;
+        }
+
+        .container { max-width: 1024px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
 
         /* Header */
         header {
             text-align: center;
             padding: 40px 20px 30px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid var(--parchment-dark);
             margin-bottom: 30px;
         }
 
         h1 {
-            font-size: clamp(28px, 8vw, 48px);
-            font-weight: 700;
+            font-size: clamp(32px, 8vw, 56px);
+            font-weight: 600;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ff6b35 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--burgundy);
         }
 
-        .week-date { font-size: 14px; color: #888; margin-bottom: 16px; }
-        .header-note { font-size: 13px; color: #999; font-style: italic; }
+        /* Decorative divider matching Borderlands Atlas */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 12px 0 16px;
+        }
+        .divider .line { width: 40px; height: 1px; background: var(--gold); opacity: 0.5; }
+        .divider .diamond { width: 6px; height: 6px; transform: rotate(45deg); border: 1px solid var(--gold); opacity: 0.6; }
+        .divider .dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--brass); opacity: 0.6; }
+
+        .week-date { font-size: 15px; color: var(--text-secondary); margin-bottom: 12px; }
+        .header-note { font-size: 14px; color: var(--text-secondary); font-style: italic; }
 
         /* View Toggle */
         .view-toggle {
@@ -54,32 +107,35 @@
 
         .view-btn {
             padding: 8px 20px;
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 20px;
+            border: 1px solid var(--burgundy);
+            border-opacity: 0.3;
+            border-color: rgba(107,44,44,0.3);
             background: transparent;
-            color: #888;
-            font-size: 13px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-family: inherit;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .view-btn.active {
-            background: rgba(255,107,53,0.15);
-            border-color: rgba(255,107,53,0.4);
-            color: #ff6b35;
+            background: rgba(107,44,44,0.1);
+            border-color: var(--burgundy);
+            color: var(--burgundy);
         }
 
         .view-btn:hover:not(.active) {
-            border-color: rgba(255,255,255,0.3);
-            color: #ccc;
+            border-color: rgba(107,44,44,0.5);
+            color: var(--burgundy);
+            background: rgba(107,44,44,0.05);
         }
 
-        /* Name Modal */
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(61,40,23,0.6);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -87,37 +143,38 @@
         .modal.active { display: flex; }
 
         .modal-content {
-            background: #1a1a1a;
+            background: var(--cream);
             padding: 40px;
-            border-radius: 12px;
+            border-radius: 4px;
             max-width: 400px;
             width: 90%;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--parchment-dark);
+            box-shadow: 0 20px 60px rgba(61,40,23,0.3);
         }
 
-        .modal h2 { font-size: 24px; margin-bottom: 12px; color: #fff; }
-        .modal p { font-size: 14px; color: #aaa; margin-bottom: 24px; }
+        .modal h2 { font-size: 26px; margin-bottom: 12px; color: var(--burgundy); font-weight: 600; }
+        .modal p { font-size: 15px; color: var(--text-secondary); margin-bottom: 24px; }
 
         .modal input, .add-event-form input, .add-event-form select, .add-event-form textarea {
             width: 100%;
             padding: 12px 16px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
-            background: rgba(255,255,255,0.05);
-            color: #fff;
+            border: 1px solid var(--parchment-dark);
+            border-radius: 4px;
+            background: var(--parchment);
+            color: var(--text-primary);
             font-size: 16px;
             margin-bottom: 12px;
             font-family: inherit;
         }
 
         .modal input::placeholder, .add-event-form input::placeholder, .add-event-form textarea::placeholder {
-            color: #666;
+            color: #9B8B75;
         }
 
         .modal input:focus, .add-event-form input:focus, .add-event-form select:focus, .add-event-form textarea:focus {
             outline: none;
-            border-color: #ff6b35;
-            background: rgba(255,107,53,0.1);
+            border-color: var(--burgundy);
+            background: rgba(107,44,44,0.05);
         }
 
         .add-event-form textarea { min-height: 80px; resize: vertical; }
@@ -125,19 +182,22 @@
         .btn-primary {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: var(--burgundy);
             border: none;
-            border-radius: 8px;
-            color: #fff;
+            border-radius: 4px;
+            color: var(--cream);
             font-weight: 600;
             cursor: pointer;
             font-size: 16px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
+            background: var(--burgundy-dark);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,107,53,0.3);
+            box-shadow: 0 8px 20px rgba(107,44,44,0.25);
         }
 
         .btn-primary:active { transform: translateY(0); }
@@ -146,16 +206,17 @@
             width: 100%;
             padding: 10px;
             background: transparent;
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 8px;
-            color: #888;
+            border: 1px solid rgba(107,44,44,0.3);
+            border-radius: 4px;
+            color: var(--text-secondary);
             cursor: pointer;
             font-size: 14px;
+            font-family: inherit;
             margin-top: 8px;
             transition: all 0.2s ease;
         }
 
-        .btn-secondary:hover { border-color: rgba(255,255,255,0.3); color: #ccc; }
+        .btn-secondary:hover { border-color: var(--burgundy); color: var(--burgundy); }
 
         /* Floating Add Button */
         .fab {
@@ -165,13 +226,13 @@
             width: 56px;
             height: 56px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: var(--burgundy);
             border: none;
-            color: #fff;
+            color: var(--cream);
             font-size: 28px;
             cursor: pointer;
             z-index: 900;
-            box-shadow: 0 4px 16px rgba(255,107,53,0.4);
+            box-shadow: 0 4px 16px rgba(107,44,44,0.4);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
@@ -179,13 +240,13 @@
         }
 
         .fab:hover {
+            background: var(--burgundy-dark);
             transform: scale(1.1);
-            box-shadow: 0 8px 24px rgba(255,107,53,0.5);
+            box-shadow: 0 8px 24px rgba(107,44,44,0.5);
         }
 
         /* Events Grid */
         .events-by-day { display: grid; gap: 40px; }
-
         .day-section { animation: fadeIn 0.4s ease; }
 
         @keyframes fadeIn {
@@ -194,17 +255,18 @@
         }
 
         .day-header {
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--burgundy);
             margin-bottom: 20px;
             padding-bottom: 12px;
-            border-bottom: 2px solid rgba(255,107,53,0.3);
+            border-bottom: 2px solid var(--gold);
+            opacity: 0.9;
         }
 
         .day-header .date {
-            font-size: 13px;
-            color: #888;
+            font-size: 14px;
+            color: var(--text-secondary);
             font-weight: 400;
             margin-left: 12px;
         }
@@ -221,22 +283,20 @@
 
         /* Event Card */
         .event-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
+            background: var(--cream);
+            border: 1px solid var(--parchment-dark);
+            border-radius: 4px;
             padding: 20px;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             height: 100%;
-            backdrop-filter: blur(10px);
         }
 
         .event-card:hover {
-            border-color: rgba(255,107,53,0.3);
-            background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(247,147,30,0.02) 100%);
+            border-color: var(--gold);
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(255,107,53,0.15);
+            box-shadow: 0 12px 30px rgba(61,40,23,0.12);
         }
 
         .event-header {
@@ -247,32 +307,34 @@
             margin-bottom: 12px;
         }
 
-        .event-name { font-size: 18px; font-weight: 700; color: #fff; flex-grow: 1; }
+        .event-name { font-size: 20px; font-weight: 600; color: var(--deep-brown); flex-grow: 1; }
 
         .category-tag {
             display: inline-block;
             font-size: 11px;
             font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 5px 12px;
+            border-radius: 2px;
             white-space: nowrap;
             flex-shrink: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .category-theatre { background: rgba(168,85,247,0.2); color: #d8b4fe; }
-        .category-exhibitions { background: rgba(20,184,184,0.2); color: #67e8f9; }
-        .category-music { background: rgba(239,68,68,0.2); color: #fca5a5; }
-        .category-nights { background: rgba(59,130,246,0.2); color: #93c5fd; }
-        .category-date { background: rgba(236,72,153,0.2); color: #fbcfe8; }
-        .category-trip { background: rgba(34,197,94,0.2); color: #86efac; }
-        .category-supper { background: rgba(249,115,22,0.2); color: #fed7aa; }
-        .category-social { background: rgba(251,191,36,0.2); color: #fde68a; }
+        .category-theatre { background: rgba(107,44,44,0.15); color: var(--burgundy); }
+        .category-exhibitions { background: rgba(44,74,44,0.15); color: var(--forest); }
+        .category-music { background: rgba(184,134,11,0.15); color: var(--brass); }
+        .category-nights { background: rgba(26,31,58,0.15); color: var(--navy); }
+        .category-date { background: rgba(107,44,44,0.1); color: #8B4060; }
+        .category-trip { background: rgba(44,74,44,0.12); color: #3D6B3D; }
+        .category-supper { background: rgba(184,134,11,0.12); color: #8B6914; }
+        .category-social { background: rgba(201,169,97,0.2); color: var(--deep-brown); }
 
         .event-meta {
             display: flex;
             gap: 16px;
-            font-size: 13px;
-            color: #aaa;
+            font-size: 14px;
+            color: var(--text-secondary);
             margin-bottom: 12px;
             flex-wrap: wrap;
         }
@@ -280,44 +342,36 @@
         .event-time, .event-location { display: flex; align-items: flex-start; gap: 4px; }
 
         .event-location a {
-            color: #ff6b35;
+            color: var(--burgundy);
             text-decoration: none;
-            border-bottom: 1px dotted rgba(255,107,53,0.5);
+            border-bottom: 1px dotted rgba(107,44,44,0.4);
             transition: color 0.2s ease;
         }
-        .event-location a:hover { color: #f7931e; border-bottom-color: rgba(247,147,30,1); }
+        .event-location a:hover { color: var(--burgundy-dark); border-bottom-style: solid; }
 
-        .event-price { font-weight: 600; color: #fff; }
+        .event-price { font-weight: 600; color: var(--deep-brown); }
 
-        .event-source {
-            font-size: 11px;
-            color: #666;
-            margin-bottom: 8px;
-        }
-
-        .event-source .source-name {
-            color: #888;
-        }
+        .event-source { font-size: 12px; color: #9B8B75; margin-bottom: 8px; font-style: italic; }
 
         .event-description {
-            font-size: 14px;
-            color: #bbb;
+            font-size: 15px;
+            color: var(--text-secondary);
             margin-bottom: 16px;
             flex-grow: 1;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .event-rsvps {
             margin-bottom: 16px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid var(--parchment-dark);
         }
 
         .rsvp-label {
-            font-size: 12px;
-            color: #888;
+            font-size: 11px;
+            color: #9B8B75;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             margin-bottom: 8px;
             display: block;
         }
@@ -325,45 +379,43 @@
         .rsvp-names { display: flex; flex-wrap: wrap; gap: 6px; }
 
         .rsvp-badge {
-            background: rgba(255,107,53,0.15);
-            border: 1px solid rgba(255,107,53,0.3);
+            background: rgba(107,44,44,0.1);
+            border: 1px solid rgba(107,44,44,0.2);
             padding: 4px 10px;
-            border-radius: 16px;
+            border-radius: 2px;
             font-size: 12px;
-            color: #ff6b35;
+            color: var(--burgundy);
         }
 
-        .no-rsvps { font-size: 12px; color: #666; font-style: italic; }
+        .no-rsvps { font-size: 13px; color: #9B8B75; font-style: italic; }
 
-        /* Card Actions Row */
-        .card-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: auto;
-        }
+        /* Card Actions */
+        .card-actions { display: flex; gap: 8px; margin-top: auto; }
 
         .rsvp-button {
             flex: 1;
             padding: 12px;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: var(--burgundy);
             border: none;
-            border-radius: 8px;
-            color: #fff;
+            border-radius: 4px;
+            color: var(--cream);
             font-weight: 600;
             cursor: pointer;
             font-size: 15px;
+            font-family: inherit;
             transition: all 0.3s ease;
         }
 
         .rsvp-button:hover:not(.rsvped) {
+            background: var(--burgundy-dark);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255,107,53,0.3);
+            box-shadow: 0 8px 20px rgba(107,44,44,0.25);
         }
 
         .rsvp-button.rsvped {
-            background: linear-gradient(135deg, rgba(34,197,94,0.3) 0%, rgba(74,222,128,0.2) 100%);
-            color: #86efac;
-            border: 1px solid rgba(34,197,94,0.4);
+            background: rgba(44,74,44,0.15);
+            color: var(--forest);
+            border: 1px solid rgba(44,74,44,0.3);
         }
 
         .rsvp-button:active:not(.rsvped) { transform: translateY(0); }
@@ -372,10 +424,10 @@
         .icon-btn {
             width: 44px;
             height: 44px;
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 8px;
+            border: 1px solid rgba(107,44,44,0.2);
+            border-radius: 4px;
             background: transparent;
-            color: #888;
+            color: var(--text-secondary);
             cursor: pointer;
             font-size: 16px;
             display: flex;
@@ -386,49 +438,49 @@
         }
 
         .icon-btn:hover {
-            border-color: rgba(255,107,53,0.4);
-            color: #ff6b35;
-            background: rgba(255,107,53,0.1);
+            border-color: var(--burgundy);
+            color: var(--burgundy);
+            background: rgba(107,44,44,0.05);
         }
 
         .ticket-link {
             display: block;
             text-align: center;
             padding: 10px;
-            border: 1px solid rgba(255,107,53,0.3);
-            border-radius: 8px;
-            color: #ff6b35;
+            border: 1px solid rgba(107,44,44,0.3);
+            border-radius: 4px;
+            color: var(--burgundy);
             text-decoration: none;
             font-size: 14px;
             margin-top: 8px;
             transition: all 0.3s ease;
         }
 
-        .ticket-link:hover { background: rgba(255,107,53,0.1); }
+        .ticket-link:hover { background: rgba(107,44,44,0.05); }
 
         /* Empty State */
         .empty-state { text-align: center; padding: 80px 20px; }
         .empty-state-icon { font-size: 48px; margin-bottom: 20px; }
-        .empty-state h2 { font-size: 24px; color: #fff; margin-bottom: 8px; }
-        .empty-state p { color: #888; font-size: 16px; }
+        .empty-state h2 { font-size: 24px; color: var(--burgundy); margin-bottom: 8px; }
+        .empty-state p { color: var(--text-secondary); font-size: 16px; }
 
         /* Footer */
         footer {
             text-align: center;
             padding: 40px 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid var(--parchment-dark);
             margin-top: 60px;
-            color: #666;
-            font-size: 13px;
+            color: #9B8B75;
+            font-size: 14px;
         }
-        footer a { color: #ff6b35; text-decoration: none; }
+        footer a { color: var(--burgundy); text-decoration: none; }
         footer a:hover { text-decoration: underline; }
 
         /* Status Messages */
         .status-message {
             padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 13px;
+            border-radius: 4px;
+            font-size: 14px;
             margin-bottom: 20px;
             animation: slideDown 0.3s ease;
         }
@@ -439,36 +491,33 @@
         }
 
         .status-success {
-            background: rgba(34,197,94,0.15);
-            color: #86efac;
-            border: 1px solid rgba(34,197,94,0.3);
+            background: rgba(44,74,44,0.1);
+            color: var(--forest);
+            border: 1px solid rgba(44,74,44,0.25);
         }
 
         .status-error {
-            background: rgba(239,68,68,0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(239,68,68,0.3);
+            background: rgba(107,44,44,0.1);
+            color: var(--burgundy);
+            border: 1px solid rgba(107,44,44,0.25);
         }
 
         /* Responsive */
         @media (max-width: 480px) {
             .container { padding: 12px; }
             header { padding: 24px 12px 20px; }
-            h1 { font-size: 28px; }
+            h1 { font-size: 32px; }
             .event-header { flex-direction: column; }
             .category-tag { align-self: flex-start; }
             .modal-content { padding: 24px; }
             .fab { bottom: 16px; right: 16px; width: 50px; height: 50px; font-size: 24px; }
         }
 
-        /* Form date input styling */
-        input[type="date"], input[type="time"] {
-            color-scheme: dark;
-        }
+        input[type="date"], input[type="time"] { color-scheme: light; }
 
         select {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236B4423' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 12px center;
         }
@@ -478,7 +527,7 @@
     <!-- Name Modal -->
     <div class="modal" id="nameModal">
         <div class="modal-content">
-            <h2>Hey! Welcome</h2>
+            <h2>Welcome</h2>
             <p>What's your name? So everyone knows you're coming.</p>
             <input type="text" id="nameInput" placeholder="Your name" autocomplete="off">
             <button class="btn-primary" id="nameSubmitBtn">Let's go</button>
@@ -518,6 +567,15 @@
     <div class="container">
         <header>
             <h1>Weekly Picks</h1>
+            <div class="divider">
+                <div class="line"></div>
+                <div class="diamond"></div>
+                <div class="line" style="width:24px"></div>
+                <div class="dot"></div>
+                <div class="line" style="width:24px"></div>
+                <div class="diamond"></div>
+                <div class="line"></div>
+            </div>
             <div class="week-date" id="weekRange"></div>
             <p class="header-note">Tap "I'm in" to RSVP, or add your own events with the + button</p>
         </header>
@@ -540,7 +598,6 @@
         // CONFIGURATION
         // ============================================================
 
-        // Set this to your deployed Google Apps Script URL
         const API_URL = 'https://script.google.com/macros/s/AKfycbzwQWDVlHDOm4qET47wvbDnrOuN20RRffDZF0T7SW-HC3SrwXYGxpVoL9bdzKax0V0W/exec';
 
         const CATEGORY_COLORS = {
@@ -617,7 +674,6 @@
 
             fab.addEventListener('click', () => {
                 if (!userName) { showNameModal(); return; }
-                // Default date to tomorrow
                 const tomorrow = new Date();
                 tomorrow.setDate(tomorrow.getDate() + 1);
                 document.getElementById('eventDateInput').value = tomorrow.toISOString().split('T')[0];
@@ -626,10 +682,7 @@
             });
 
             cancelBtn.addEventListener('click', () => modal.classList.remove('active'));
-
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.classList.remove('active');
-            });
+            modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -667,16 +720,13 @@
                 createdAt: new Date().toISOString()
             };
 
-            // Optimistically add to local state
             userEvents.push(event);
             renderEvents();
 
-            // Close modal and reset form
             document.getElementById('addEventModal').classList.remove('active');
             document.getElementById('addEventForm').reset();
-            showStatus(`Added "${name}" - your friends can now RSVP!`, 'success');
+            showStatus(`Added "${name}" \u2014 your friends can now RSVP!`, 'success');
 
-            // Send to backend
             if (API_URL) {
                 try {
                     await fetch(API_URL, {
@@ -720,10 +770,7 @@
             try {
                 const response = await fetch('events.json');
                 const data = await response.json();
-                curatedEvents = (data.events || []).map(e => ({
-                    ...e,
-                    source: e.source || 'Curated'
-                }));
+                curatedEvents = (data.events || []).map(e => ({ ...e, source: e.source || 'Curated' }));
 
                 if (data.weekOf) {
                     const startDate = new Date(data.weekOf);
@@ -737,10 +784,10 @@
                 if (data.updatedAt) {
                     const updated = new Date(data.updatedAt);
                     document.getElementById('footer').innerHTML =
-                        `Curated by Jacob <span style="opacity:0.7">\u00b7</span> Updated ${updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`;
+                        `Curated by Jacob <span style="opacity:0.5">\u00b7</span> Updated ${updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`;
                 }
             } catch (error) {
-                console.log('No curated events loaded (events.json missing or invalid)');
+                console.log('No curated events loaded');
             }
         }
 
@@ -762,26 +809,18 @@
 
         function getAllEvents() {
             const all = [...curatedEvents, ...userEvents];
-
-            // Filter by view
             const now = new Date();
             const startOfWeek = new Date(now);
-            startOfWeek.setDate(now.getDate() - now.getDay() + 1); // Monday
+            startOfWeek.setDate(now.getDate() - now.getDay() + 1);
             startOfWeek.setHours(0, 0, 0, 0);
 
             if (currentView === 'week') {
                 const endOfWeek = new Date(startOfWeek);
                 endOfWeek.setDate(endOfWeek.getDate() + 7);
-                return all.filter(e => {
-                    const d = new Date(e.date);
-                    return d >= startOfWeek && d < endOfWeek;
-                });
+                return all.filter(e => { const d = new Date(e.date); return d >= startOfWeek && d < endOfWeek; });
             } else {
                 const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-                return all.filter(e => {
-                    const d = new Date(e.date);
-                    return d >= now && d <= endOfMonth;
-                });
+                return all.filter(e => { const d = new Date(e.date); return d >= now && d <= endOfMonth; });
             }
         }
 
@@ -799,42 +838,30 @@
                 return;
             }
 
-            // Sort by date
             events.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-            // Group by day
             const eventsByDay = {};
             events.forEach(event => {
                 const day = event.day || new Date(event.date).toLocaleDateString('en-GB', { weekday: 'long' });
-                const key = event.date + '-' + day; // unique per date
+                const key = event.date + '-' + day;
                 if (!eventsByDay[key]) eventsByDay[key] = { day, date: event.date, events: [] };
                 eventsByDay[key].events.push(event);
             });
 
-            // Sort day groups by date
             const sortedDays = Object.values(eventsByDay).sort((a, b) => new Date(a.date) - new Date(b.date));
 
             let html = '<div class="events-by-day">';
-            sortedDays.forEach(group => {
-                html += renderDaySection(group.day, group.date, group.events);
-            });
+            sortedDays.forEach(group => { html += renderDaySection(group.day, group.date, group.events); });
             html += '</div>';
             container.innerHTML = html;
-
             attachEventListeners();
         }
 
         function renderDaySection(day, dateStr, events) {
             const date = new Date(dateStr);
             const formatted = date.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
-
-            let html = `
-                <div class="day-section">
-                    <div class="day-header">${escapeHtml(day)}<span class="date">${formatted}</span></div>
-                    <div class="events-grid">`;
-
+            let html = `<div class="day-section"><div class="day-header">${escapeHtml(day)}<span class="date">${formatted}</span></div><div class="events-grid">`;
             events.forEach(event => { html += renderEventCard(event); });
-
             html += '</div></div>';
             return html;
         }
@@ -844,24 +871,18 @@
             const eventRsvps = rsvps[event.id] || [];
             const hasRsvped = eventRsvps.some(r => r.name === userName);
 
-            // Source badge
-            const sourceHtml = event.source ?
-                `<div class="event-source"><span class="source-name">${escapeHtml(event.source)}</span></div>` : '';
+            const sourceHtml = event.source ? `<div class="event-source">${escapeHtml(event.source)}</div>` : '';
 
-            // RSVP section
             let rsvpSection = '<div class="event-rsvps"><span class="rsvp-label">Who\'s going</span>';
             if (eventRsvps.length === 0) {
                 rsvpSection += '<div class="no-rsvps">Be the first!</div>';
             } else {
                 rsvpSection += '<div class="rsvp-names">';
-                eventRsvps.forEach(r => {
-                    rsvpSection += `<span class="rsvp-badge">${escapeHtml(r.name)}</span>`;
-                });
+                eventRsvps.forEach(r => { rsvpSection += `<span class="rsvp-badge">${escapeHtml(r.name)}</span>`; });
                 rsvpSection += '</div>';
             }
             rsvpSection += '</div>';
 
-            // Calendar link
             const calUrl = makeCalendarUrl(event);
 
             return `
@@ -870,38 +891,27 @@
                         <h3 class="event-name">${escapeHtml(event.name)}</h3>
                         <span class="category-tag category-${categoryClass}">${escapeHtml(event.category)}</span>
                     </div>
-
                     ${sourceHtml}
-
                     <div class="event-meta">
                         <span class="event-time">&#x1F550; ${escapeHtml(event.time)}</span>
                         ${event.price ? `<span class="event-price">${escapeHtml(event.price)}</span>` : ''}
                     </div>
-
                     ${event.location && event.location !== 'TBD' ? `
-                        <div class="event-location" style="font-size:13px;color:#aaa;margin-bottom:12px;display:flex;align-items:flex-start;gap:4px;">
+                        <div class="event-location" style="font-size:14px;color:var(--text-secondary);margin-bottom:12px;display:flex;align-items:flex-start;gap:4px;">
                             <span>&#x1F4CD;</span>
                             ${event.mapsUrl ?
-                                `<a href="${escapeHtml(event.mapsUrl)}" target="_blank" rel="noopener" style="color:#ff6b35;text-decoration:none;border-bottom:1px dotted rgba(255,107,53,0.5)">${escapeHtml(event.location)}</a>` :
-                                `<span>${escapeHtml(event.location)}</span>`
-                            }
-                        </div>
-                    ` : ''}
-
+                                `<a href="${escapeHtml(event.mapsUrl)}" target="_blank" rel="noopener">${escapeHtml(event.location)}</a>` :
+                                `<span>${escapeHtml(event.location)}</span>`}
+                        </div>` : ''}
                     <p class="event-description">${escapeHtml(event.description)}</p>
-
                     ${rsvpSection}
-
                     <div class="card-actions">
-                        <button class="rsvp-button ${hasRsvped ? 'rsvped' : ''}"
-                            data-event-id="${escapeHtml(event.id)}"
-                            ${hasRsvped ? 'disabled' : ''}>
+                        <button class="rsvp-button ${hasRsvped ? 'rsvped' : ''}" data-event-id="${escapeHtml(event.id)}" ${hasRsvped ? 'disabled' : ''}>
                             ${hasRsvped ? '&#x2713; I\'m in!' : 'I\'m in'}
                         </button>
                         <button class="icon-btn" onclick="window.open('${calUrl}', '_blank')" title="Add to Google Calendar">&#x1F4C5;</button>
                         <button class="icon-btn share-btn" data-event-name="${escapeHtml(event.name)}" data-event-date="${escapeHtml(event.date)}" title="Share">&#x1F517;</button>
                     </div>
-
                     ${event.ticketUrl ? `<a href="${escapeHtml(event.ticketUrl)}" target="_blank" rel="noopener" class="ticket-link">Get tickets &#x2192;</a>` : ''}
                 </div>`;
         }
@@ -911,13 +921,8 @@
         // ============================================================
 
         function attachEventListeners() {
-            document.querySelectorAll('.rsvp-button:not(.rsvped)').forEach(btn => {
-                btn.addEventListener('click', handleRsvpClick);
-            });
-
-            document.querySelectorAll('.share-btn').forEach(btn => {
-                btn.addEventListener('click', handleShare);
-            });
+            document.querySelectorAll('.rsvp-button:not(.rsvped)').forEach(btn => { btn.addEventListener('click', handleRsvpClick); });
+            document.querySelectorAll('.share-btn').forEach(btn => { btn.addEventListener('click', handleShare); });
         }
 
         async function handleRsvpClick(e) {
@@ -940,9 +945,7 @@
                         headers: { 'Content-Type': 'text/plain' },
                         body: JSON.stringify({ action: 'rsvp', eventId, name: userName })
                     });
-                } catch (err) {
-                    console.error('RSVP backend error:', err);
-                }
+                } catch (err) { console.error('RSVP backend error:', err); }
             }
 
             showStatus(`You're in for ${event.name}!`, 'success');
@@ -953,7 +956,7 @@
             const btn = e.target.closest('.share-btn');
             const name = btn.dataset.eventName;
             const date = btn.dataset.eventDate;
-            const text = `${name} - ${new Date(date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}`;
+            const text = `${name} \u2014 ${new Date(date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}`;
 
             if (navigator.share) {
                 navigator.share({ title: name, text, url: window.location.href });
@@ -969,7 +972,6 @@
 
         function makeCalendarUrl(event) {
             const date = event.date.replace(/-/g, '');
-            // Parse time to create proper datetime
             const timeMatch = event.time.match(/(\d+):?(\d*)([ap]m)/i);
             let hours = 0, minutes = 0;
             if (timeMatch) {
@@ -978,20 +980,14 @@
                 if (timeMatch[3].toLowerCase() === 'pm' && hours !== 12) hours += 12;
                 if (timeMatch[3].toLowerCase() === 'am' && hours === 12) hours = 0;
             }
-
             const startStr = `${date}T${String(hours).padStart(2, '0')}${String(minutes).padStart(2, '0')}00`;
-            const endHours = hours + 2; // Default 2 hour duration
+            const endHours = hours + 2;
             const endStr = `${date}T${String(endHours).padStart(2, '0')}${String(minutes).padStart(2, '0')}00`;
-
             const params = new URLSearchParams({
-                action: 'TEMPLATE',
-                text: event.name,
+                action: 'TEMPLATE', text: event.name,
                 dates: `${startStr}/${endStr}`,
-                details: event.description || '',
-                location: event.location || '',
-                ctz: 'Europe/London'
+                details: event.description || '', location: event.location || '', ctz: 'Europe/London'
             });
-
             return `https://calendar.google.com/calendar/render?${params.toString()}`;
         }
 
